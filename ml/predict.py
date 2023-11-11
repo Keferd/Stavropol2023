@@ -1,12 +1,13 @@
 from typing import List, Optional, Dict
 import os
+import cv2
 
 from ultralytics import YOLO
 from ensemble_boxes import *
 
-from dangers_dict import ALL_DANGERS_COORDS
-from calculating import object_in_danger
-from utils import convert_from_normal, visualize_boxes
+from ml.dangers_dict import ALL_DANGERS_COORDS
+from ml.calculating import object_in_danger
+from ml.utils import convert_from_normal, visualize_boxes
 
 
 def restructure_preds(yolo_pred):
@@ -111,7 +112,7 @@ def predict(danger_zone_name, path_to_image):
     # image_list = [os.path.join(directory, file) for file in os.listdir(directory) if
     #               os.path.splitext(file)[1].lower() in image_extensions]
     # path_to_image = image_list[0]
-    model = YOLO('runs/detect/yolov8n_custom8/weights/best.pt')
+    model = YOLO('ml/best.pt')
     models = [model]
     weights = [1]
     humans, scores, labels = ensemble_boxes(
@@ -120,30 +121,13 @@ def predict(danger_zone_name, path_to_image):
         weights=weights
     )
 
-    humans = convert_from_normal(humans, width=1280, height=720)
-    print(object_in_danger(humans, danger_zone[0]))
+    image = cv2.imread(path_to_image)
+    height, width, _ = image.shape
 
-    visualize_boxes(path_to_image, humans, [danger_zone[0]])
+    humans = convert_from_normal(humans, width=width, height=height)
 
-if __name__ == '__main__':
-    danger_zone_name = 'Spp-K1-1-2-6'
-    directory = 'cameras/' + danger_zone_name
-    danger_zone = ALL_DANGERS_COORDS[danger_zone_name]
-    image_extensions = ['.jpg', '.jpeg', '.png']
-    image_list = [os.path.join(directory, file) for file in os.listdir(directory) if
-                  os.path.splitext(file)[1].lower() in image_extensions]
-    path_to_image = image_list[0]
-    model = YOLO('runs/detect/yolov8n_custom8/weights/best.pt')
-    models = [model]
-    weights = [1]
-    humans, scores, labels = ensemble_boxes(
-        models=models,
-        path_to_image=path_to_image,
-        weights=weights
-    )
+    result = object_in_danger(humans, danger_zone)
 
+    output_image_path = visualize_boxes(path_to_image, humans, [danger_zone])
 
-    humans = convert_from_normal(humans, width=1280, height=720)
-    print(object_in_danger(humans, danger_zone[0]))
-
-    visualize_boxes(path_to_image, humans,[danger_zone[0]])
+    return output_image_path, result

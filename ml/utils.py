@@ -20,8 +20,14 @@ def visualize_boxes(image_path, person_boxes, danger_zones):
         danger_zone_np = np.array([danger_zone], dtype=np.int32)
         cv2.polylines(image, [danger_zone_np], isClosed=True, color=(0, 255, 0), thickness=2)
 
+
     # Отобразить изображение
-    cv2.imshow('Danger Zone Visualization', image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow('Danger Zone Visualization', image)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    output_path = 'output.jpg'
+    cv2.imwrite(output_path, image)
+
+    return output_path
 

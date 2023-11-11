@@ -4,6 +4,7 @@ from flaskapp import app
 from flask import render_template, make_response, request, Response, jsonify, json, session, redirect, url_for, send_file
 import functools
 import json
+from ml.predict import predict
 
 import base64
 
@@ -47,14 +48,14 @@ def post_file():
             else:
                 json_object = {}
 
-            file_url = url_for('post_file', filename=file.filename, _external=True)
-
-            with open(save_path, "rb") as image_file:
+            # file_url = url_for('post_file', filename=file.filename, _external=True)
+            output_image_path, result = predict('DpR-Csp-uipv-ShV-V1', save_path)
+            with open(output_image_path, "rb") as image_file:
                 encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
 
             response_data = {
                 'image_url': encoded_image,  # URL for accessing the uploaded file
-                'json_object': json_object
+                'json_object': result
             }
             print(response_data)
 
