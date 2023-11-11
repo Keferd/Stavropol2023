@@ -15,6 +15,39 @@ sendfilebtn.addEventListener("click", function (e) {
 
 
     if (typeof file != 'undefined') {
+        document.getElementById("download").innerHTML = `
+            <div class="img__container">
+                <img class="img__loading" src="static/img/loading.png" alt="loading">
+            </div>
+
+            <style>
+                .img__container {
+                    flex: 1;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .img__loading {
+                    width: 100px;
+                    height: 100px;
+                    animation: rotate_img 0.5s linear infinite;
+                }
+
+                @keyframes rotate_img {
+                    0% {
+                      transform: rotate(0deg);
+                    }
+                    100% {
+                      transform: rotate(360deg);
+                    }
+                  }
+            </style>
+        `;
+        
+
         fetch("/api/file",
         {
             method: "POST",
@@ -49,6 +82,9 @@ sendfilebtn.addEventListener("click", function (e) {
 
 
                 document.getElementById("download").innerHTML = `
+                    <a href="" class="return_button">
+                        Вернуться
+                    </a>
                     <h2 class="main__h2">
                         Результат
                     </h2>
@@ -73,8 +109,8 @@ sendfilebtn.addEventListener("click", function (e) {
         
     }
     else {
-        document.getElementById("download").innerHTML = `
-            <div style="color: red; margin-left: 10px">
+        document.getElementById("error").innerHTML = `
+            <div style="color: red;">
                 Выберите файл
             </div>
         `
