@@ -40,18 +40,19 @@ def post_file():
         camera = request.form.get('camera')
 
         print(file)
+        print(camera)
 
         if file and file.filename.endswith('.jpg'):
             save_path = os.path.join(os.path.dirname(__file__), file.filename)
             file.save(save_path)
 
-            if camera:
-                json_object = json.loads(camera)
-            else:
-                json_object = {}
+            # if camera:
+            #     json_object = json.loads(camera)
+            # else:
+            #     json_object = {}
 
             # file_url = url_for('post_file', filename=file.filename, _external=True)
-            output_image_path, result = predict('DpR-Csp-uipv-ShV-V1', save_path)
+            output_image_path, result = predict(camera, save_path)
             with open(output_image_path, "rb") as image_file:
                 encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
 
