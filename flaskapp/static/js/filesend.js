@@ -52,8 +52,8 @@ sendfilebtn.addEventListener("click", function (e) {
                     <h2 class="main__h2">
                         Результат
                     </h2>
-                    <div id="resizable-container"  class="result__img"> 
-                        <img id="resizable-image" src=` + imageUrl + ` alt="Изображение">
+                    <div class="result__img"> 
+                        <img src=` + imageUrl + ` alt="Изображение">
                     </div>
 
                     <a class="aside__button_a" href=` + imageUrl + ` download="result.jpg">
@@ -64,26 +64,6 @@ sendfilebtn.addEventListener("click", function (e) {
                         ` + data.json_object + `
                     </div>
                 `;
-
-                let isResizing = false;
-                let container = document.getElementById('resizable-container');
-                let image = document.getElementById('resizable-image');
-
-                container.addEventListener('mousedown', (event) => {
-                isResizing = true;
-                document.addEventListener('mousemove', handleMouseMove);
-                document.addEventListener('mouseup', () => {
-                    isResizing = false;
-                    document.removeEventListener('mousemove', handleMouseMove);
-                });
-                });
-
-                function handleMouseMove(event) {
-                if (isResizing) {
-                    let newWidth = event.clientX - container.getBoundingClientRect().left;
-                    container.style.width = `${newWidth}px`;
-                }
-                }
             });
         })
         .catch( error => {

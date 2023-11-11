@@ -39,6 +39,8 @@ def post_file():
         file = request.files["file"]
         camera = request.form.get('camera')
 
+        print(file)
+
         if file and file.filename.endswith('.jpg'):
             save_path = os.path.join(os.path.dirname(__file__), file.filename)
             file.save(save_path)
@@ -57,7 +59,6 @@ def post_file():
                 'image_url': encoded_image,  # URL for accessing the uploaded file
                 'json_object': result
             }
-            print(response_data)
 
             return jsonify(response_data)
 
