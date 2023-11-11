@@ -40,6 +40,7 @@ def post_file():
         camera = request.form.get('camera')
 
         print(file)
+        camera = camera.replace('"', '')
         print(camera)
 
         if file and file.filename.endswith('.jpg'):
