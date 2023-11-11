@@ -1,6 +1,6 @@
 from shapely.geometry import Polygon
 from typing import List
-
+from utils import get_nested_level
 
 def object_in_danger(humans: List[List], danger_zone: List):
     results = []
@@ -8,11 +8,20 @@ def object_in_danger(humans: List[List], danger_zone: List):
     limit = 15
     for human in humans:
         result = False
-        inter_area = calculate_intersection_area(human, danger_zone)
-        if inter_area >= limit:
-            result = True
-        results.append(result)
-        conf.append(inter_area)
+        if get_nested_level(danger_zone) > 2:
+            for danger in danger_zone:
+                inter_area = calculate_intersection_area(human, danger)
+                if inter_area >= limit:
+                    result = True
+                results.append(result)
+                conf.append(inter_area)
+        else:
+            inter_area = calculate_intersection_area(human, danger_zone)
+            if inter_area >= limit:
+                result = True
+            results.append(result)
+            conf.append(inter_area)
+
     return results, conf
 
 

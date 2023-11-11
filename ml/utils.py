@@ -1,6 +1,11 @@
 import cv2
 import numpy as np
 from typing import List
+def get_nested_level(lst):
+    if isinstance(lst, list):
+        return 1 + max(get_nested_level(item) for item in lst)
+    else:
+        return 0
 
 def convert_from_normal(objects, width, height):
     objects = np.array(objects)
@@ -15,6 +20,8 @@ def visualize_boxes(image_path, person_boxes, danger_zones):
     for person_box in person_boxes:
         cv2.rectangle(image, (person_box[0], person_box[1]), (person_box[2], person_box[3]), (0, 0, 255), 2)
 
+    if get_nested_level(danger_zones) <= 2:
+        danger_zones = [danger_zones]
     # Отобразить каждую опасную зону
     for danger_zone in danger_zones:
         danger_zone_np = np.array([danger_zone], dtype=np.int32)
