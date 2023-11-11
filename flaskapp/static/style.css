@@ -9,7 +9,9 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f8f8f8;
+    background-color: #fafafa;
+    /* background-image: url(img/back.png);
+    background-repeat: repeat; */
 }
 
 header {
@@ -61,6 +63,18 @@ main {
     margin: 0 50px;
 }
 
+.main__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 30px;
+    margin-bottom: 100px;
+    padding: 20px;
+    border-radius: 50px;
+    border: 2px dashed #2c3e50;
+}
+
 .main__table {
     width: 100%;
     margin-bottom: 30px;
@@ -69,17 +83,24 @@ main {
     align-items: flex-start;
 }
 
+.main__camera_label {
+    color: #2c3e50;
+    font-size: 18px;
+}
+
 .main__h2 {
-    font-size: 24px;
+    font-size: 32px;
     margin-top: 20px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #0c0c0c
+    border-bottom: 1px solid #2c3e50;
+    color: #2c3e50;
 }
 
 .main__table_field {
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .main__camera {
@@ -87,6 +108,9 @@ main {
     height: 40px;
     margin-bottom: 30px;
     font-size: 18px;
+    color: #2c3e50;
+    border: 2px solid #3498db;
+    border-radius: 5px;
 }
 
 
@@ -151,6 +175,7 @@ footer {
 .main__form {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .input-file-row {
@@ -159,8 +184,8 @@ footer {
     height: 40px;
 
     /* margin-left: 10px; */
-    margin-bottom: 100px;
-    background-color: #2c5dc7;
+    margin-bottom: 30px;
+    background-color: #3498db;
     border-radius: 5px;
 
     color: #FFFFFF;
@@ -180,7 +205,7 @@ footer {
 
     margin-left: 20px;
     margin-bottom: 20px;
-    background-color: #2c5dc7;
+    background-color: #3498db;
     border-radius: 5px;
 
     color: #FFFFFF;
@@ -249,8 +274,7 @@ footer {
 
     /* margin-top: 50px; */
     /* margin-left: 100px; */
-    margin-bottom: 30px;
-    background-color: #2c5dc7;
+    background-color: #3498db;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -262,7 +286,7 @@ footer {
     color: #FFFFFF;
     font-size: 24px;
 
-    border: 3px solid #2c5dc7;
+    border: 3px solid #3498db;
 
     box-shadow: 0 0 5px rgba(44, 93, 199, 0.5);
     transition: color 1s ease;
@@ -272,7 +296,7 @@ footer {
 .aside__button:hover {
     cursor: pointer;
     background-color: white;
-    color: #2c5dc7;
+    color: #3498db;
     animation: colorChange 1s ease-in-out;
 }
 
@@ -292,10 +316,10 @@ footer {
     justify-content: center;
     font-weight: normal;
 
-    color: #2c5dc7;
+    color: #3498db;
     font-size: 24px;
 
-    border: 1px solid #2c5dc7;
+    border: 1px solid #3498db;
 
     padding: 0 20px;
     box-shadow: 0 0 5px rgba(44, 93, 199, 0.5);
@@ -307,9 +331,11 @@ footer {
     text-decoration: underline;
 }
 
-
-
-
+.form__partition {
+    width: 300px;
+    border-top: 2px solid #2c3e50;
+    margin-bottom: 20px;
+}
 
 
 
@@ -324,7 +350,7 @@ footer {
 
 
 .result__img {
-    max-width: 100%;
+    max-width: 60%;
 }
 
 .result__img img {
@@ -332,11 +358,22 @@ footer {
     height: auto;
 }
 
+#download {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
+.return_button {
+    color: 	#3366BB;
+    margin-top: 10px;
+    font-size: 24px;
+}
 
-
-
-
+.return_button:hover {
+    color: #2c3e50;
+}
 
 
 
@@ -345,7 +382,7 @@ footer {
 
 @keyframes colorChange {
     from {
-        background-color: #2c5dc7;
+        background-color: #3498db;
     }
     to {
         background-color: white;

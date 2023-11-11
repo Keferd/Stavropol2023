@@ -6,18 +6,6 @@
     <title>Безопасность</title>
     <link rel="stylesheet" href="static/style.css">
     <script type="text/javascript" src="/static/js/jquery-3.6.0.min.js"></script>
-    <style>
-        #resizable-container {
-          width: 50%;
-          overflow: hidden;
-        }
-    
-        #resizable-image {
-          width: 100%;
-          height: auto;
-          display: block;
-        }
-      </style>
 </head>
 <body>
     <header>
@@ -25,33 +13,42 @@
             Анализатор безопасности
         </a>
     </header>
-    <main>
-        <h2 class="main__h2">
-            Обработка изображения
-        </h2>
-        <div class="main__table">
-            <div class="main__table_field">
-                
-                <form class="main__form">
-                    Выберите камеру:
-                    <select class="main__camera" id="camera">
-                        <option>Sony Alpha a7S III</option>
-                        <option>GoPro Hero 10 Black</option>
-                        <option>Canon EOS C300 Mark III</option>
-                        <option>Panasonic Lumix GH5</option>
-                        <option>Logitech Circle 2</option>
-                    </select>
-                    <div class="input-file-row">
-                        <label class="input-file">
-                            <input class="aside__button" type="file" name="file" id="file" value="Загрузить файл"  required>
-                            <span>   Выберите файл   </span>
-                        </label>
-                        <div class="input-file-list"></div>
-                    </div>
-                    <input class="aside__button aside__button_submit" type="submit" value="Запустить">
-                </form>
-                <div id="download">
+    <main id="download">
+        <div class="main__container">
+            <h2 class="main__h2">
+                Обработка изображения
+            </h2>
+            <div class="main__table">
+                <div class="main__table_field">
+                    <form class="main__form">
+                        <div class="main__camera_label">Выберите камеру:</div>
+                        <select class="main__camera" id="camera">
+                            <option>DpR-Csp-uipv-ShV-V1</option>
+                            <option>Pgp-com2-K-1-0-9-36</option>
+                            <option>Pgp-lpc2-K-0-1-38</option>
+                            <option>Phl-com3-Shv2-9-K34</option>
+                            <option>Php-Angc-K3-1</option>
+                            <option>Php-Angc-K3-8</option>
+                            <option>Php-Ctm-K-1-12-56</option>
+                            <option>Php-Ctm-Shv1-2-K3</option>
+                            <option>Php-nta4-shv016309-k2-1-7</option>
+                            <option>Spp-210-K1-3-3-5</option>
+                            <option>Spp-210-K1-3-3-6</option>
+                            <option>Spp-K1-1-2-6</option>
+                        </select>
+                        <div class="input-file-row">
+                            <label class="input-file">
+                                <input class="aside__button" type="file" name="file" id="file" value="Загрузить файл"  required>
+                                <span>   Выберите файл   </span>
+                            </label>
+                            <div class="input-file-list"></div>
+                        </div>
+                        <div class="form__partition"></div>
+                        <input class="aside__button aside__button_submit" type="submit" value="Запустить">
+                    </form>
+                    <div id="error">
 
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,7 +69,8 @@
                     '<div class="input-file-list-item1">' + 
                         '<span class="input-file-list-name">' + this.files.item(i).name + '</span>' + '</div>' +
                     '<a href="#" onclick="removeFilesItem(this); return false;" class="input-file-list-remove">x</a>' +
-                    '</div>';
+                    '</div>' + 
+                    '<style> .form__partition { margin-top: 50px; } </style>';
                 $files_list.append(new_file_input);
                 dt.items.add(this.files.item(i));
             };

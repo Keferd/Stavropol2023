@@ -4,6 +4,7 @@ from flaskapp import app
 from flask import render_template, make_response, request, Response, jsonify, json, session, redirect, url_for, send_file
 import functools
 import json
+from ml.predict import predict
 
 import base64
 
@@ -38,25 +39,26 @@ def post_file():
         file = request.files["file"]
         camera = request.form.get('camera')
 
+        print(file)
+        camera = camera.replace('"', '')
+        print(camera)
+
         if file and file.filename.endswith('.jpg'):
             save_path = os.path.join(os.path.dirname(__file__), file.filename)
             file.save(save_path)
 
-            if camera:
-                json_object = json.loads(camera)
-            else:
-                json_object = {}
-
-            file_url = url_for('post_file', filename=file.filename, _external=True)
-
-            with open(save_path, "rb") as image_file:
+            output_image_path, result = predict(camera, save_path)
+            os.remove(save_path)
+            
+            with open(output_image_path, "rb") as image_file:
                 encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
 
             response_data = {
-                'image_url': encoded_image,  # URL for accessing the uploaded file
-                'json_object': json_object
+                'image_url': encoded_image, 
+                'json_object': result
             }
-            print(response_data)
+
+            os.remove(output_image_path)
 
             return jsonify(response_data)
 

@@ -15,6 +15,39 @@ sendfilebtn.addEventListener("click", function (e) {
 
 
     if (typeof file != 'undefined') {
+        document.getElementById("download").innerHTML = `
+            <div class="img__container">
+                <img class="img__loading" src="static/img/loading.png" alt="loading">
+            </div>
+
+            <style>
+                .img__container {
+                    flex: 1;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .img__loading {
+                    width: 100px;
+                    height: 100px;
+                    animation: rotate_img 0.5s linear infinite;
+                }
+
+                @keyframes rotate_img {
+                    0% {
+                      transform: rotate(0deg);
+                    }
+                    100% {
+                      transform: rotate(360deg);
+                    }
+                  }
+            </style>
+        `;
+        
+
         fetch("/api/file",
         {
             method: "POST",
@@ -49,41 +82,24 @@ sendfilebtn.addEventListener("click", function (e) {
 
 
                 document.getElementById("download").innerHTML = `
+                    <a href="" class="return_button">
+                        Вернуться
+                    </a>
                     <h2 class="main__h2">
                         Результат
                     </h2>
-                    <div id="resizable-container"  class="result__img"> 
-                        <img id="resizable-image" src=` + imageUrl + ` alt="Изображение">
+                    <div class="result__img"> 
+                        <img src=` + imageUrl + ` alt="Изображение">
                     </div>
 
                     <a class="aside__button_a" href=` + imageUrl + ` download="result.jpg">
                         <input  class="aside__button_download" type="button" value="Скачать">
                     </a>
 
-                    <div style="font-size: 32px;">
+                    <div style="font-size: 32px; margin-bottom: 30px">
                         ` + data.json_object + `
                     </div>
                 `;
-
-                let isResizing = false;
-                let container = document.getElementById('resizable-container');
-                let image = document.getElementById('resizable-image');
-
-                container.addEventListener('mousedown', (event) => {
-                isResizing = true;
-                document.addEventListener('mousemove', handleMouseMove);
-                document.addEventListener('mouseup', () => {
-                    isResizing = false;
-                    document.removeEventListener('mousemove', handleMouseMove);
-                });
-                });
-
-                function handleMouseMove(event) {
-                if (isResizing) {
-                    let newWidth = event.clientX - container.getBoundingClientRect().left;
-                    container.style.width = `${newWidth}px`;
-                }
-                }
             });
         })
         .catch( error => {
@@ -93,8 +109,8 @@ sendfilebtn.addEventListener("click", function (e) {
         
     }
     else {
-        document.getElementById("download").innerHTML = `
-            <div style="color: red; margin-left: 10px">
+        document.getElementById("error").innerHTML = `
+            <div style="color: red;">
                 Выберите файл
             </div>
         `
