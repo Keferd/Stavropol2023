@@ -47,20 +47,18 @@ def post_file():
             save_path = os.path.join(os.path.dirname(__file__), file.filename)
             file.save(save_path)
 
-            # if camera:
-            #     json_object = json.loads(camera)
-            # else:
-            #     json_object = {}
-
-            # file_url = url_for('post_file', filename=file.filename, _external=True)
             output_image_path, result = predict(camera, save_path)
+            os.remove(save_path)
+            
             with open(output_image_path, "rb") as image_file:
                 encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
 
             response_data = {
-                'image_url': encoded_image,  # URL for accessing the uploaded file
+                'image_url': encoded_image, 
                 'json_object': result
             }
+
+            os.remove(output_image_path)
 
             return jsonify(response_data)
 
