@@ -15,6 +15,39 @@ sendfilebtn.addEventListener("click", function (e) {
 
 
     if (typeof file != 'undefined') {
+        document.getElementById("download").innerHTML = `
+            <div class="img__container">
+                <img class="img__loading" src="static/img/loading.png" alt="loading">
+            </div>
+
+            <style>
+                .img__container {
+                    flex: 1;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .img__loading {
+                    width: 100px;
+                    height: 100px;
+                    animation: rotate_img 0.5s linear infinite;
+                }
+
+                @keyframes rotate_img {
+                    0% {
+                      transform: rotate(0deg);
+                    }
+                    100% {
+                      transform: rotate(360deg);
+                    }
+                  }
+            </style>
+        `;
+        
+
         fetch("/api/file",
         {
             method: "POST",
@@ -25,9 +58,6 @@ sendfilebtn.addEventListener("click", function (e) {
         })
         .then( response => {
             response.json().then(function(data) {
-                console.log(data);
-                console.log(data.image_url);
-                console.log(data.json_object);
 
                 var encodedImage = data.image_url;
 
@@ -47,8 +77,15 @@ sendfilebtn.addEventListener("click", function (e) {
                 // Создание объекта URL для использования в src атрибуте изображения
                 var imageUrl = URL.createObjectURL(blob);
 
+                for (i in data.json_object[0]) {
+                    console.log(i+1, data.json_object[0][i], data.json_object[1][i])
+                }
+
 
                 document.getElementById("download").innerHTML = `
+                    <a href="" class="return_button">
+                        Вернуться
+                    </a>
                     <h2 class="main__h2">
                         Результат
                     </h2>
@@ -60,10 +97,53 @@ sendfilebtn.addEventListener("click", function (e) {
                         <input  class="aside__button_download" type="button" value="Скачать">
                     </a>
 
-                    <div style="font-size: 32px;">
-                        ` + data.json_object + `
+                    <div style="font-size: 24px; margin-top: 30px; margin-bottom: 50px;">
+                        <table id="table" style="border-spacing: 0;"> 
+                            
+                        </table>
                     </div>
-                `;
+
+                    <style>
+                        th {
+                            background-color: #3498db;
+                            color: #fafafa;
+                        }
+
+                        td, th {
+                            min-width: 100px;
+                            min-height: 40px;
+                            border: 1px solid black;
+                            text-align: center;
+                        }
+                    </style>
+                    `;  
+
+                    if (data.json_object[0].length > 0) {
+                        document.getElementById("table").innerHTML += `
+                            <caption>Таблица объектов</caption>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Sign</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>   
+                            <tbody id="tbody">
+
+                            </tbody>
+                        `;
+
+                        for (i in data.json_object[0]) {
+                            document.getElementById("tbody").innerHTML += `
+                                <tr>
+                                    <td>` + i + `</td>
+                                    <td>` + data.json_object[0][i] + `</td>
+                                    <td>` + data.json_object[1][i] + `</td>
+                                </tr>
+                            `;
+                        };
+                    }
+
             });
         })
         .catch( error => {
@@ -73,8 +153,8 @@ sendfilebtn.addEventListener("click", function (e) {
         
     }
     else {
-        document.getElementById("download").innerHTML = `
-            <div style="color: red; margin-left: 10px">
+        document.getElementById("error").innerHTML = `
+            <div style="color: red;">
                 Выберите файл
             </div>
         `

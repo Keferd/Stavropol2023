@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from typing import List
+
 from shapely.geometry import Polygon
 from shapely.ops import nearest_points
 
@@ -28,8 +29,10 @@ def visualize_boxes(image_path, person_boxes, danger_zones, result):
     if get_nested_level(danger_zones) <= 2:
         danger_zones = [danger_zones]
 
+
     polygons_zone = []
     polygons_person = []
+
     # Отобразить каждую опасную зону
     for danger_zone in danger_zones:
         danger_zone_np = np.array([danger_zone], dtype=np.int32)
