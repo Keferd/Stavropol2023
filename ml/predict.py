@@ -127,7 +127,7 @@ def predict(danger_zone_name, path_to_image):
     humans = convert_from_normal(humans, width=width, height=height)
 
     result = object_in_danger(humans, danger_zone)
-
-    output_image_path = visualize_boxes(path_to_image, humans, [danger_zone])
+    print(result)
+    output_image_path = visualize_boxes(path_to_image, humans, danger_zone, result)
 
     return output_image_path, result
