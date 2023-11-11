@@ -96,7 +96,7 @@ sendfilebtn.addEventListener("click", function (e) {
                         <input  class="aside__button_download" type="button" value="Скачать">
                     </a>
 
-                    <div style="font-size: 32px;">
+                    <div style="font-size: 32px; margin-bottom: 30px">
                         ` + data.json_object + `
                     </div>
                 `;
