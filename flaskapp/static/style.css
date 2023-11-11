@@ -1,0 +1,353 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Arial;
+    color: #0f0f0f
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f8f8;
+}
+
+header {
+    min-height: 60px;
+    background-color: #3498db;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+}
+
+.header__name {
+    color: #f8f8f8;
+    font-size: 24px;
+    font-size: bold;
+    text-decoration: none;
+}
+
+.header__name:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+main {
+    flex-grow: 1;
+    margin: 0 50px;
+}
+
+.main__table {
+    width: 100%;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.main__h2 {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #0c0c0c
+}
+
+.main__table_field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main__camera {
+    width: 200px;
+    height: 40px;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+footer {
+    color: #7f92a3;
+    min-height: 60px;
+    background-color: #2c3e50;
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.main__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-file-row {
+	display: inline-block;
+    width: 200px;
+    height: 40px;
+
+    /* margin-left: 10px; */
+    margin-bottom: 100px;
+    background-color: #2c5dc7;
+    border-radius: 5px;
+
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: bold;
+}
+.input-file {
+    margin-top: 7px;
+	position: relative;
+	display: inline-block;
+    
+}
+.input-file span {
+    cursor: pointer;
+	width: 200px;
+    height: 40px;
+
+    margin-left: 20px;
+    margin-bottom: 20px;
+    background-color: #2c5dc7;
+    border-radius: 5px;
+
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: bold;
+
+    border:none;
+}
+.input-file input[type=file] {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+ 
+/* Focus */
+
+ 
+/* Hover/Active */
+.input-file-row:hover {
+    cursor: pointer;
+    outline: 2px solid black;
+}
+ 
+/* Disabled */
+.input-file input[type=file]:disabled + span {
+	background-color: #eee;
+}
+ 
+/* Список файлов */
+.input-file-list {
+	padding: 10px 0;
+}
+.input-file-list-item {
+    display: flex;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 200px;
+	margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.input-file-list-item1 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 190px;
+	margin-bottom: 10px;
+}
+
+.input-file-list-name {
+    font-size: 14px;
+}
+
+.input-file-list-remove {
+	color: red;
+	text-decoration: none;
+	display: inline-block;
+}
+
+.aside__button_a {
+    text-decoration: none;
+}
+
+.aside__button {
+    width: 180px;
+    height: 40px;
+
+    /* margin-top: 50px; */
+    /* margin-left: 100px; */
+    margin-bottom: 30px;
+    background-color: #2c5dc7;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    box-sizing: border-box;
+
+    color: #FFFFFF;
+    font-size: 24px;
+
+    border: 3px solid #2c5dc7;
+
+    box-shadow: 0 0 5px rgba(44, 93, 199, 0.5);
+    transition: color 1s ease;
+}
+
+
+.aside__button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: #2c5dc7;
+    animation: colorChange 1s ease-in-out;
+}
+
+
+.aside__button_download {
+    width: 180px;
+    height: 40px;
+
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+
+    color: #2c5dc7;
+    font-size: 24px;
+
+    border: 1px solid #2c5dc7;
+
+    padding: 0 20px;
+    box-shadow: 0 0 5px rgba(44, 93, 199, 0.5);
+}
+
+
+.aside__button_download:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.result__img {
+    max-width: 100%;
+}
+
+.result__img img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@keyframes colorChange {
+    from {
+        background-color: #2c5dc7;
+    }
+    to {
+        background-color: white;
+    }
+}

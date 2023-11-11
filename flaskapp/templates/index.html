@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Безопасность</title>
+    <link rel="stylesheet" href="static/style.css">
+    <script type="text/javascript" src="/static/js/jquery-3.6.0.min.js"></script>
+    <style>
+        #resizable-container {
+          width: 50%;
+          overflow: hidden;
+        }
+    
+        #resizable-image {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+      </style>
+</head>
+<body>
+    <header>
+        <a href="" class="header__name">
+            Анализатор безопасности
+        </a>
+    </header>
+    <main>
+        <h2 class="main__h2">
+            Обработка изображения
+        </h2>
+        <div class="main__table">
+            <div class="main__table_field">
+                
+                <form class="main__form">
+                    Выберите камеру:
+                    <select class="main__camera" id="camera">
+                        <option>Sony Alpha a7S III</option>
+                        <option>GoPro Hero 10 Black</option>
+                        <option>Canon EOS C300 Mark III</option>
+                        <option>Panasonic Lumix GH5</option>
+                        <option>Logitech Circle 2</option>
+                    </select>
+                    <div class="input-file-row">
+                        <label class="input-file">
+                            <input class="aside__button" type="file" name="file" id="file" value="Загрузить файл"  required>
+                            <span>   Выберите файл   </span>
+                        </label>
+                        <div class="input-file-list"></div>
+                    </div>
+                    <input class="aside__button aside__button_submit" type="submit" value="Запустить">
+                </form>
+                <div id="download">
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        Это база
+    </footer>
+
+
+    <script> var dt = new DataTransfer();
+ 
+        $('.input-file input[type=file]').on('change', function(){
+            let $files_list = $(this).closest('.input-file').next();
+            $files_list.empty();
+         
+            for(var i = 0; i < this.files.length; i++){
+                let new_file_input = '<div class="input-file-list-item">' +
+                    '<div class="input-file-list-item1">' + 
+                        '<span class="input-file-list-name">' + this.files.item(i).name + '</span>' + '</div>' +
+                    '<a href="#" onclick="removeFilesItem(this); return false;" class="input-file-list-remove">x</a>' +
+                    '</div>';
+                $files_list.append(new_file_input);
+                dt.items.add(this.files.item(i));
+            };
+            this.files = dt.files;
+        });
+         
+        function removeFilesItem(target){
+            let name = $(target).prev().text();
+            let input = $(target).closest('.input-file-row').find('input[type=file]');	
+            $(target).closest('.input-file-list-item').remove();	
+            for(let i = 0; i < dt.items.length; i++){
+                if(name === dt.items[i].getAsFile().name){
+                    dt.items.remove(i);
+                }
+            }
+            input[0].files = dt.files;  
+        }</script>
+    <script src="static/js/filesend.js"></script>
+</body>
+</html>
