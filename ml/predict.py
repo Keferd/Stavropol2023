@@ -106,6 +106,14 @@ def ensemble_boxes(
 
 
 def predict(danger_zone_name, path_to_image):
+    """
+    :param danger_zone_name: название опасной зоны
+    :param path_to_image: путь к изображению
+    :return: путь к сохраненному изображению, кортеж с результатами
+    предсказания:
+     - Список булевых значений, указывающих, находится ли каждый объект в опасности.
+     - Список оценочных баллов, соответствующих проценту пересечения каждого объекта с опасной зоной
+    """
     directory = 'cameras/' + danger_zone_name
     danger_zone = ALL_DANGERS_COORDS[danger_zone_name]
     image_extensions = ['.jpg', '.jpeg', '.png']

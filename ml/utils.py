@@ -3,11 +3,29 @@ import numpy as np
 from typing import List
 
 def convert_from_normal(objects, width, height):
+    """
+    :param objects: Список координат объектов в нормализованном формате (x1, y1, x2, y2),
+    где значения находятся в пределах [0, 1].
+    :param width: Ширина оригинального изображения.
+    :param height: Высота оригинального изображения.
+    :return converted_objects: писок координат объектов в оригинальных размерах изображения.
+    """
     objects = np.array(objects)
     converted_objects = np.round(objects * [width, height, width, height]).astype(int)
     return converted_objects.tolist()
 
 def visualize_boxes(image_path, person_boxes, danger_zones):
+    """
+    Визуализация боксов объектов и опасных зон на изображении, используя
+    OpenCV для отрисовки прямоугольников боксов объектов
+    и полигонов опасных зон на изображении
+
+    :param image_path: путь к изображению
+    :param person_boxes: список координат боксов объектов (людей)
+    :param danger_zones: Список координат опасных зон
+    :return output_path: Путь к сохранненому изображению
+    """
+
     # Загрузить изображение
     image = cv2.imread(image_path)
 
