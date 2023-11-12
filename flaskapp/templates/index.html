@@ -21,6 +21,13 @@
             <div class="main__table">
                 <div class="main__table_field">
                     <form class="main__form">
+                        <div class="main__camera_label">Выберите модель:</div>
+                        <select class="main__camera" id="model">
+                            <option>YOLOv8n</option>
+                            <option>RT-DETR</option>
+                            <option>YOLOv8x</option>
+                            <option>YOLOv8n+RT-DETR</option>
+                        </select>
                         <div class="main__camera_label">Выберите камеру:</div>
                         <select class="main__camera" id="camera">
                             <option>DpR-Csp-uipv-ShV-V1</option>
@@ -36,6 +43,10 @@
                             <option>Spp-210-K1-3-3-6</option>
                             <option>Spp-K1-1-2-6</option>
                         </select>
+                        <div class="check__block">
+                            <input type="checkbox" id="check" name="check">
+                            <label for="check">Использовать улучшение изображения <br>(требуется высокая производительность!)</label>
+                        </div>
                         <div class="input-file-row">
                             <label class="input-file">
                                 <input class="aside__button" type="file" name="file" id="file" value="Загрузить файл"  required>

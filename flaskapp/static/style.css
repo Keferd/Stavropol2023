@@ -380,6 +380,32 @@ footer {
 
 
 
+
+
+
+
+
+
+.check__block {
+    margin-bottom: 30px;
+}
+
+.check__block label {
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 @keyframes colorChange {
     from {
         background-color: #3498db;
