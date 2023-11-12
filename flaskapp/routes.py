@@ -4,6 +4,8 @@ from flaskapp import app
 from flask import render_template, make_response, request, Response, jsonify, json, session, redirect, url_for, send_file
 import functools
 import json
+from ml.predict import predict
+from image_processing.esrgan import image_proccessing
 
 import base64
 
@@ -34,29 +36,42 @@ def index():
 
 @app.route('/api/file', methods=['POST'])
 def post_file():
+    """
+    Обработка полученного сервером изображения
+    :return:
+    """
     try:
         file = request.files["file"]
         camera = request.form.get('camera')
+        model = request.form.get('model')
+        check = False
+        check = request.form.get('check')
 
-        if file and file.filename.endswith('.jpg'):
+        camera = camera.replace('"', '')
+        model = model.replace('"', '')
+        
+        
+        if file and camera and model and file.filename.endswith('.jpg'):
             save_path = os.path.join(os.path.dirname(__file__), file.filename)
             file.save(save_path)
 
-            if camera:
-                json_object = json.loads(camera)
-            else:
-                json_object = {}
+            #тут внес изменения Kashanaft для улучшения изображения
+            if check == "true":
+                image_proccessing(save_path)
 
-            file_url = url_for('post_file', filename=file.filename, _external=True)
+            output_image_path, result = predict(camera, save_path, model)
 
-            with open(save_path, "rb") as image_file:
+            os.remove(save_path)
+            
+            with open(output_image_path, "rb") as image_file:
                 encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
 
             response_data = {
-                'image_url': encoded_image,  # URL for accessing the uploaded file
-                'json_object': json_object
+                'image_url': encoded_image, 
+                'json_object': result
             }
-            print(response_data)
+
+            os.remove(output_image_path)
 
             return jsonify(response_data)
 

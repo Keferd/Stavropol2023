@@ -5,16 +5,53 @@ sendfilebtn.addEventListener("click", function (e) {
     
 
     let input = document.getElementById("file");
-    let camera = document.getElementById("camera").value
+    let camera = document.getElementById("camera").value;
+    let model = document.getElementById("model").value;
+    let check = document.getElementById("check").checked;
     let file = input.files[0];
     
     let formdata = new FormData();
     formdata.append('file', file);
     formdata.append('camera', JSON.stringify(camera));
+    formdata.append('model', JSON.stringify(model));
+    formdata.append('check', JSON.stringify(check));
     formdata.append('test', 'test is work');
 
 
     if (typeof file != 'undefined') {
+        document.getElementById("download").innerHTML = `
+            <div class="img__container">
+                <img class="img__loading" src="static/img/loading.png" alt="loading">
+            </div>
+
+            <style>
+                .img__container {
+                    flex: 1;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .img__loading {
+                    width: 100px;
+                    height: 100px;
+                    animation: rotate_img 0.5s linear infinite;
+                }
+
+                @keyframes rotate_img {
+                    0% {
+                      transform: rotate(0deg);
+                    }
+                    100% {
+                      transform: rotate(360deg);
+                    }
+                  }
+            </style>
+        `;
+        
+
         fetch("/api/file",
         {
             method: "POST",
@@ -25,9 +62,6 @@ sendfilebtn.addEventListener("click", function (e) {
         })
         .then( response => {
             response.json().then(function(data) {
-                console.log(data);
-                console.log(data.image_url);
-                console.log(data.json_object);
 
                 var encodedImage = data.image_url;
 
@@ -47,43 +81,75 @@ sendfilebtn.addEventListener("click", function (e) {
                 // Создание объекта URL для использования в src атрибуте изображения
                 var imageUrl = URL.createObjectURL(blob);
 
+                for (i in data.json_object[0]) {
+                    console.log(i+1, data.json_object[0][i], data.json_object[1][i])
+                }
+
 
                 document.getElementById("download").innerHTML = `
+                    <a href="" class="return_button">
+                        Вернуться
+                    </a>
                     <h2 class="main__h2">
                         Результат
                     </h2>
-                    <div id="resizable-container"  class="result__img"> 
-                        <img id="resizable-image" src=` + imageUrl + ` alt="Изображение">
+                    <div class="result__img"> 
+                        <img src=` + imageUrl + ` alt="Изображение">
                     </div>
 
                     <a class="aside__button_a" href=` + imageUrl + ` download="result.jpg">
                         <input  class="aside__button_download" type="button" value="Скачать">
                     </a>
 
-                    <div style="font-size: 32px;">
-                        ` + data.json_object + `
+                    <div style="font-size: 24px; margin-top: 30px; margin-bottom: 50px;">
+                        <table id="table" style="border-spacing: 0;"> 
+                            
+                        </table>
                     </div>
-                `;
 
-                let isResizing = false;
-                let container = document.getElementById('resizable-container');
-                let image = document.getElementById('resizable-image');
+                    <style>
+                        th {
+                            background-color: #3498db;
+                            color: #fafafa;
+                        }
 
-                container.addEventListener('mousedown', (event) => {
-                isResizing = true;
-                document.addEventListener('mousemove', handleMouseMove);
-                document.addEventListener('mouseup', () => {
-                    isResizing = false;
-                    document.removeEventListener('mousemove', handleMouseMove);
-                });
-                });
+                        td, th {
+                            min-width: 100px;
+                            min-height: 40px;
+                            border: 1px solid black;
+                            text-align: center;
+                        }
+                    </style>
+                    `;  
 
-                function handleMouseMove(event) {
-                if (isResizing) {
-                    let newWidth = event.clientX - container.getBoundingClientRect().left;
-                    container.style.width = `${newWidth}px`;
-                }
-                }
+                    if (data.json_object[0].length > 0) {
+                        document.getElementById("table").innerHTML += `
+                            <caption>Таблица объектов</caption>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Sign</th>
+                                    <th>Score</th>
+                                    <th>Dist</th>
+                                </tr>
+                            </thead>   
+                            <tbody id="tbody">
+
+                            </tbody>
+                        `;
+
+                        for (i in data.json_object[0]) {
+                            document.getElementById("tbody").innerHTML += `
+                                <tr>
+                                    <td>` + data.json_object[0][i] + `</td>
+                                    <td>` + data.json_object[1][i] + `</td>
+                                    <td>` + data.json_object[2][i] + `</td>
+                                    <td>` + data.json_object[3][i] + `</td>
+                                </tr>
+                            `;
+                        };
+                    }
+
             });
         })
         .catch( error => {
@@ -93,8 +159,8 @@ sendfilebtn.addEventListener("click", function (e) {
         
     }
     else {
-        document.getElementById("download").innerHTML = `
-            <div style="color: red; margin-left: 10px">
+        document.getElementById("error").innerHTML = `
+            <div style="color: red;">
                 Выберите файл
             </div>
         `
