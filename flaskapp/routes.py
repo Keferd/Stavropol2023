@@ -36,6 +36,10 @@ def index():
 
 @app.route('/api/file', methods=['POST'])
 def post_file():
+    """
+    Обработка полученного сервером изображения
+    :return:
+    """
     try:
         file = request.files["file"]
         camera = request.form.get('camera')
@@ -50,10 +54,13 @@ def post_file():
         if file and camera and model and file.filename.endswith('.jpg'):
             save_path = os.path.join(os.path.dirname(__file__), file.filename)
             file.save(save_path)
+
             #тут внес изменения Kashanaft для улучшения изображения
             if check == "true":
                 image_proccessing(save_path)
+
             output_image_path, result = predict(camera, save_path, model)
+
             os.remove(save_path)
             
             with open(output_image_path, "rb") as image_file:

@@ -105,7 +105,19 @@ def ensemble_boxes(
     return boxes, scores, labels
 
 
+
 def predict(danger_zone_name, path_to_image, model_name):
+
+    """
+    :param danger_zone_name: название опасной зоны
+    :param path_to_image: путь к изображению
+    :return: путь к сохраненному изображению, кортеж с результатами
+    предсказания:
+     - Список булевых значений, указывающих, находится ли каждый объект в опасности.
+     - Список оценочных баллов, соответствующих проценту пересечения каждого объекта с опасной зоной
+    """
+    directory = 'cameras/' + danger_zone_name
+
     danger_zone = ALL_DANGERS_COORDS[danger_zone_name]
     directory = 'ml/models/'
     if model_name == 'YOLOv8n':
