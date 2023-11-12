@@ -40,9 +40,7 @@ def post_file():
         file = request.files["file"]
         camera = request.form.get('camera')
 
-        print(file)
         camera = camera.replace('"', '')
-        print(camera)
 
         if file and file.filename.endswith('.jpg'):
             save_path = os.path.join(os.path.dirname(__file__), file.filename)

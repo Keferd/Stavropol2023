@@ -1,6 +1,6 @@
 from shapely.geometry import Polygon
 from typing import List
-from utils import get_nested_level
+from ml.utils import get_nested_level
 
 def object_in_danger(humans: List[List], danger_zone: List):
     results = []
