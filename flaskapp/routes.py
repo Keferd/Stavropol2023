@@ -5,6 +5,7 @@ from flask import render_template, make_response, request, Response, jsonify, js
 import functools
 import json
 from ml.predict import predict
+from image_processing.esrgan import image_proccessing
 
 import base64
 
@@ -39,14 +40,13 @@ def post_file():
         file = request.files["file"]
         camera = request.form.get('camera')
 
-        print(file)
         camera = camera.replace('"', '')
-        print(camera)
 
         if file and file.filename.endswith('.jpg'):
             save_path = os.path.join(os.path.dirname(__file__), file.filename)
             file.save(save_path)
-
+            #тут внес изменения Kashanaft для улучшения изображения
+            image_proccessing(save_path)
             output_image_path, result = predict(camera, save_path)
             os.remove(save_path)
             
