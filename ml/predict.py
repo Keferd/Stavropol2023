@@ -2,7 +2,7 @@ from typing import List, Optional, Dict
 import os
 import cv2
 
-from ultralytics import YOLO
+from ultralytics import YOLO, RTDETR
 from ensemble_boxes import *
 
 from ml.dangers_dict import ALL_DANGERS_COORDS
@@ -105,18 +105,24 @@ def ensemble_boxes(
     return boxes, scores, labels
 
 
-def predict(danger_zone_name, path_to_image):
-    directory = 'cameras/' + danger_zone_name
+def predict(danger_zone_name, path_to_image, model_name):
     danger_zone = ALL_DANGERS_COORDS[danger_zone_name]
-    image_extensions = ['.jpg', '.jpeg', '.png']
-    # image_list = [os.path.join(directory, file) for file in os.listdir(directory) if
-    #               os.path.splitext(file)[1].lower() in image_extensions]
-    # path_to_image = image_list[0]
-    model = YOLO('ml/best.pt')
-    models = [model]
-    weights = [1]
+    directory = 'ml/models/'
+    if model_name == 'YOLOv8n':
+        model = [YOLO(directory + 'yolo8n.pt')]
+        weights = [1]
+    elif model_name == 'YOLOv8x':
+        model = [YOLO(directory + 'yolo8x.pt')]
+        weights = [1]
+    elif model_name == 'RT-DETR':
+        model = [RTDETR(directory + 'rtdetr.pt')]
+        weights = [1]
+    elif model_name == 'YOLOv8n+RT-DETR':
+        model = [YOLO(directory + 'yolo8n.pt'), RTDETR(directory + 'rtdetr.pt')]
+        weights = [1, 1]
+
     humans, scores, labels = ensemble_boxes(
-        models=models,
+        models=model,
         path_to_image=path_to_image,
         weights=weights
     )
@@ -127,7 +133,8 @@ def predict(danger_zone_name, path_to_image):
     humans = convert_from_normal(humans, width=width, height=height)
 
     result = object_in_danger(humans, danger_zone)
-    print(result)
-    output_image_path = visualize_boxes(path_to_image, humans, danger_zone, result)
 
+    distance_list, output_image_path = visualize_boxes(path_to_image, humans, danger_zone, result)
+    result.append(distance_list)
+    print(result)
     return output_image_path, result

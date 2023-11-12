@@ -53,7 +53,7 @@ def post_file():
             #тут внес изменения Kashanaft для улучшения изображения
             if check == "true":
                 image_proccessing(save_path)
-            output_image_path, result = predict(camera, save_path)
+            output_image_path, result = predict(camera, save_path, model)
             os.remove(save_path)
             
             with open(output_image_path, "rb") as image_file:

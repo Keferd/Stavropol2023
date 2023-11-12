@@ -49,7 +49,7 @@ def visualize_boxes(image_path, person_boxes, danger_zones, result):
         polygons_person.append(Polygon([[x1, y1], [x2, y1], [x2, y2], [x1, y2]]))
         cv2.putText(image, "ID:" + str(i) + " DZ:" + str(conf[i]) + "%", (x1 - 35, y1), cv2.FONT_HERSHEY_SIMPLEX,
                     0.7, (255, 255, 0), 2, cv2.LINE_4)
-
+    distance_list = []
     for person in polygons_person:
         min_distance = float('inf')
         closest_zone = None
@@ -59,7 +59,7 @@ def visualize_boxes(image_path, person_boxes, danger_zones, result):
             if distance < min_distance:
                 min_distance = distance
                 closest_zone = zone
-
+        distance_list.append(round(min_distance))
         if closest_zone is not None and min_distance != 0:
             person_point, zone_point = nearest_points(person, closest_zone)
             x1 = int(person_point.coords[0][0])
@@ -91,4 +91,4 @@ def visualize_boxes(image_path, person_boxes, danger_zones, result):
     output_path = 'output.jpg'
     cv2.imwrite(output_path, image)
 
-    return output_path
+    return distance_list, output_path

@@ -111,7 +111,7 @@ def ensemble_boxes(
 
 def predict(danger_zone_name, path_to_image):
     danger_zone = ALL_DANGERS_COORDS[danger_zone_name]
-    model = YOLO('ml/best.pt')
+    model = YOLO('ml/models/yolo8n.pt')
     models = [model]
     weights = [1]
     humans, scores, labels = ensemble_boxes(
