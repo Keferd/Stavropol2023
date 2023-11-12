@@ -130,6 +130,7 @@ sendfilebtn.addEventListener("click", function (e) {
                                     <th>Id</th>
                                     <th>Sign</th>
                                     <th>Score</th>
+                                    <th>Dist</th>
                                 </tr>
                             </thead>   
                             <tbody id="tbody">
@@ -143,6 +144,7 @@ sendfilebtn.addEventListener("click", function (e) {
                                     <td>` + data.json_object[0][i] + `</td>
                                     <td>` + data.json_object[1][i] + `</td>
                                     <td>` + data.json_object[2][i] + `</td>
+                                    <td>` + data.json_object[3][i] + `</td>
                                 </tr>
                             `;
                         };

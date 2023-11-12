@@ -29,7 +29,7 @@ def object_in_danger(humans: List[List], danger_zone: List):
             conf.append(inter_area)
 
     ids = list(range(len(results)))
-    return ids, results, conf
+    return [ids, results, conf]
 
 '''Функция для вычисления площади пересечения между ограничивающим прямоугольником и полигоном 
 и процента площади пересечения.'''
