@@ -5,12 +5,16 @@ sendfilebtn.addEventListener("click", function (e) {
     
 
     let input = document.getElementById("file");
-    let camera = document.getElementById("camera").value
+    let camera = document.getElementById("camera").value;
+    let model = document.getElementById("model").value;
+    let check = document.getElementById("check").checked;
     let file = input.files[0];
     
     let formdata = new FormData();
     formdata.append('file', file);
     formdata.append('camera', JSON.stringify(camera));
+    formdata.append('model', JSON.stringify(model));
+    formdata.append('check', JSON.stringify(check));
     formdata.append('test', 'test is work');
 
 
@@ -58,9 +62,6 @@ sendfilebtn.addEventListener("click", function (e) {
         })
         .then( response => {
             response.json().then(function(data) {
-                console.log(data);
-                console.log(data.image_url);
-                console.log(data.json_object);
 
                 var encodedImage = data.image_url;
 
@@ -80,6 +81,10 @@ sendfilebtn.addEventListener("click", function (e) {
                 // Создание объекта URL для использования в src атрибуте изображения
                 var imageUrl = URL.createObjectURL(blob);
 
+                for (i in data.json_object[0]) {
+                    console.log(i+1, data.json_object[0][i], data.json_object[1][i])
+                }
+
 
                 document.getElementById("download").innerHTML = `
                     <a href="" class="return_button">
@@ -96,10 +101,53 @@ sendfilebtn.addEventListener("click", function (e) {
                         <input  class="aside__button_download" type="button" value="Скачать">
                     </a>
 
-                    <div style="font-size: 32px; margin-bottom: 30px">
-                        ` + data.json_object + `
+                    <div style="font-size: 24px; margin-top: 30px; margin-bottom: 50px;">
+                        <table id="table" style="border-spacing: 0;"> 
+                            
+                        </table>
                     </div>
-                `;
+
+                    <style>
+                        th {
+                            background-color: #3498db;
+                            color: #fafafa;
+                        }
+
+                        td, th {
+                            min-width: 100px;
+                            min-height: 40px;
+                            border: 1px solid black;
+                            text-align: center;
+                        }
+                    </style>
+                    `;  
+
+                    if (data.json_object[0].length > 0) {
+                        document.getElementById("table").innerHTML += `
+                            <caption>Таблица объектов</caption>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Sign</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>   
+                            <tbody id="tbody">
+
+                            </tbody>
+                        `;
+
+                        for (i in data.json_object[0]) {
+                            document.getElementById("tbody").innerHTML += `
+                                <tr>
+                                    <td>` + data.json_object[0][i] + `</td>
+                                    <td>` + data.json_object[1][i] + `</td>
+                                    <td>` + data.json_object[2][i] + `</td>
+                                </tr>
+                            `;
+                        };
+                    }
+
             });
         })
         .catch( error => {

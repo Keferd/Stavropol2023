@@ -1,6 +1,7 @@
 from typing import List, Optional, Dict
 import os
 import cv2
+import pandas as pd
 
 from ultralytics import YOLO
 from ensemble_boxes import *
@@ -8,6 +9,9 @@ from ensemble_boxes import *
 from ml.dangers_dict import ALL_DANGERS_COORDS
 from ml.calculating import object_in_danger
 from ml.utils import convert_from_normal, visualize_boxes
+
+csv_file_path = 'C:\\Users\\user\\Desktop\\test\\sub.csv'
+images_path = 'C:\\Users\\user\\Desktop\\test\\images\\'
 
 
 def restructure_preds(yolo_pred):
@@ -106,20 +110,7 @@ def ensemble_boxes(
 
 
 def predict(danger_zone_name, path_to_image):
-    """
-    :param danger_zone_name: название опасной зоны
-    :param path_to_image: путь к изображению
-    :return: путь к сохраненному изображению, кортеж с результатами
-    предсказания:
-     - Список булевых значений, указывающих, находится ли каждый объект в опасности.
-     - Список оценочных баллов, соответствующих проценту пересечения каждого объекта с опасной зоной
-    """
-    directory = 'cameras/' + danger_zone_name
     danger_zone = ALL_DANGERS_COORDS[danger_zone_name]
-    image_extensions = ['.jpg', '.jpeg', '.png']
-    # image_list = [os.path.join(directory, file) for file in os.listdir(directory) if
-    #               os.path.splitext(file)[1].lower() in image_extensions]
-    # path_to_image = image_list[0]
     model = YOLO('ml/best.pt')
     models = [model]
     weights = [1]
@@ -135,7 +126,29 @@ def predict(danger_zone_name, path_to_image):
     humans = convert_from_normal(humans, width=width, height=height)
 
     result = object_in_danger(humans, danger_zone)
-    print(result)
-    output_image_path = visualize_boxes(path_to_image, humans, danger_zone, result)
+    return result
 
-    return output_image_path, result
+
+df = pd.read_csv(csv_file_path, delimiter=';')
+camera_name = df["camera_name"]
+img = df['"filename"']
+in_danger_zone = []
+percent = []
+
+for i in range(len(camera_name)):
+    res = predict(camera_name[i], images_path+img[i])
+    if not res[1]:
+        in_danger_zone.append(False)
+    else:
+        in_danger_zone.append(any(res[1]))
+
+    if not res[2]:
+        percent.append(0)
+    else:
+        percent.append(max(res[2]))
+
+df['in_danger_zone'] = in_danger_zone
+df['percent'] = percent
+
+# Save the updated DataFrame to the CSV file
+df.to_csv(csv_file_path, sep=';', index=False)

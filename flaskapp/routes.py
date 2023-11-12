@@ -43,15 +43,22 @@ def post_file():
     try:
         file = request.files["file"]
         camera = request.form.get('camera')
+        model = request.form.get('model')
+        check = False
+        check = request.form.get('check')
 
-        print(file)
         camera = camera.replace('"', '')
-        print(camera)
-
-        if file and file.filename.endswith('.jpg'):
+        model = model.replace('"', '')
+        
+        
+        if file and camera and model and file.filename.endswith('.jpg'):
             save_path = os.path.join(os.path.dirname(__file__), file.filename)
             file.save(save_path)
-            image_proccessing(save_path)
+
+            #тут внес изменения Kashanaft для улучшения изображения
+            if check == "true":
+                image_proccessing(save_path)
+
             output_image_path, result = predict(camera, save_path)
             os.remove(save_path)
             
