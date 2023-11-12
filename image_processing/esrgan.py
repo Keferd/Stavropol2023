@@ -4,6 +4,12 @@ from RealESRGAN import RealESRGAN
 
 
 def image_proccessing(image_path):
+    '''
+    Данная функция служит для запуска модели RealESRGAN,
+    с помощью нее улучшается качество изображения
+    :param image_path: функция принимает путь к изображению
+    :return:
+    '''
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = RealESRGAN(device, scale=4)
     model.load_weights('weights/RealESRGAN_x8.pth', download=True)
