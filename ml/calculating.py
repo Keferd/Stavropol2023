@@ -2,6 +2,7 @@ from shapely.geometry import Polygon
 from typing import List
 from ml.utils import get_nested_level
 
+
 def object_in_danger(humans: List[List], danger_zone: List):
     results = []
     conf = []
@@ -9,12 +10,16 @@ def object_in_danger(humans: List[List], danger_zone: List):
     for human in humans:
         result = False
         if get_nested_level(danger_zone) > 2:
+            tmp_res = []
+            tmp_conf = []
             for danger in danger_zone:
                 inter_area = calculate_intersection_area(human, danger)
                 if inter_area >= limit:
                     result = True
-                results.append(result)
-                conf.append(inter_area)
+                tmp_res.append(result)
+                tmp_conf.append(inter_area)
+            results.append(any(tmp_res))
+            conf.append(max(tmp_conf))
         else:
             inter_area = calculate_intersection_area(human, danger_zone)
             if inter_area >= limit:
@@ -22,7 +27,8 @@ def object_in_danger(humans: List[List], danger_zone: List):
             results.append(result)
             conf.append(inter_area)
 
-    return results, conf
+    ids = list(range(len(results)))
+    return ids, results, conf
 
 
 def calculate_intersection_area(rectangle, polygon):
